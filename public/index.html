@@ -1,0 +1,65 @@
+<!doctype html>
+<html ng-app="gamePanel">
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+    <title>HackSoc CTF</title>
+
+    <!-- SCROLLS -->
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css"><!-- load bootstrap -->
+    <link rel="stylesheet" href="./bower_components/angular-chart.js/dist/angular-chart.css">
+    <style>
+        html                    { overflow-y:scroll; }
+        body                    { padding-top:50px; }
+        #todo-list              { margin-bottom:30px; }
+        #game-form              { margin-bottom:30px; }
+        .chart-container        { width:70vw; max-height:600px; margin: auto; }
+    </style>
+
+    <!-- SPELLS -->
+    <script src="./bower_components/jquery/dist/jquery.min.js"></script><!-- load jquery -->
+    <script src="./bower_components/angular/angular.min.js"></script><!-- load angular -->
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="./bower_components/Chart.js/Chart.min.js"></script>
+    <script src="./bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="./ng-app.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL Games -->
+<body ng-controller="mainController">
+    <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right text-center">
+                    <li class="active"><a href="#">Leaderboard</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+
+    <!-- HEADER AND TODO COUNT -->
+    <div class="jumbotron text-center">
+        <h1>HackSoc CTF</h1>
+        <br />
+        <p class="lead">Another Team is currently in the lead by 1 flag!</p>
+    </div>
+    
+    <div class="chart-container">
+        <canvas width="400px" height="100%" id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels"></canvas>
+    </div>
+
+</body>
+</html>
