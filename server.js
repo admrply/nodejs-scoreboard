@@ -9,7 +9,7 @@ var express  = require('express'),
     bodyParser     = require('body-parser'),
     methodOverride = require('method-override'),
     flash          = require('connect-flash'),
-    port           = process.env.port || 80,
+    port           = process.env.PORT || 80,
         
     session       = require('express-session'),
     sessionConfig = require('./config/session.js'),
