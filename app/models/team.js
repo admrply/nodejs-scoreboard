@@ -7,6 +7,7 @@ var teamSchema = mongoose.Schema({
 
     local            : {
         name     : String,
+        admin    : Boolean,
         password : String,
         flags    : [String]
     }

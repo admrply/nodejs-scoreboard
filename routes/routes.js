@@ -45,17 +45,21 @@ module.exports = function(app, passport, io) {
 	// ---------
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
-	app.get('/dashboard', isLoggedIn, function(req, res) {
-		res.render('dashboard.ejs', {
-			user : req.user, // get the user out of session and pass to template
-            flagCheck : "",
-            flagStatus : ""
-		});
-	});
+    app.get('/dashboard', function(req, res) {
+        if(req.isAuthenticated() && req.user.local.admin){
+            res.render('ctfadmin.ejs', { user : req.user, flagCheck: "", flagStatus: "", flags: ["",""] });
+        }
+        else if(req.isAuthenticated()) {
+            res.render('dashboard.ejs', { user : req.user, flagCheck: "", flagStatus: "" });
+        }
+        else {
+            res.redirect('/login');
+        };
+    });
     
     // ADD FLAG
     // --------
-    app.post('/newflag', function(req, res) {
+    app.post('/flagman', isAdmin, function(req, res) {
         Flag.findOne({ 'flag' :  req.body.flag }, function(err, flag) {
             // if there are any errors, return the error
             if (err)
@@ -85,6 +89,24 @@ module.exports = function(app, passport, io) {
         }); 
     })
     
+    // DELETE FLAG
+    // -----------
+    app.delete('/flagman/:game_id', function(req, res) {
+        Flag.remove({
+            _id : req.params.flag_id
+        }, function(err, flag) {
+            if (err)
+                res.send(err);
+
+            // get and return all the games after you create another
+            Flag.find(function(err, flag) {
+                if (err)
+                    res.send(err)
+                res.json(flags);
+            });
+        });
+    });
+    
     // FLAGCHECK
     // ---------
     app.post('/flagcheck', isLoggedIn, function(req, res) {
@@ -104,7 +126,6 @@ module.exports = function(app, passport, io) {
                         res.render('dashboard.ejs', {user: req.user, flagCheck: "Um, you... You do realise you already got this flag... Right?", flagStatus: false})
                     }
                     else {
-                        console.log("You found a new flag. Don't be a smarmy twat.")
                         Team.findOneAndUpdate(
                             {'local.name': req.user.local.name},
                             {$push: {"local.flags": flag.flag}},
@@ -128,29 +149,17 @@ module.exports = function(app, passport, io) {
     // GET TEAM LIST
     // -------------
     app.get('/ranking', function(req, res) {
-        Team.find({}, function(err, docs) {
+        Team.find({}, 'local.name local.flags', function(err, docs) {
+            console.log(docs);
             if (!err){ 
-                res.json(docs);
+                var response = docs;
+                for (var i=0; i<response.length; i++) {
+                    response[i].local.flags = response[i].local.flags.length;
+                };
+                res.json(response);
             } else {throw err;}
         });
-//        Flag.count(function(err, c) {
-//            var noOfFlags = c;
-//            
-//        });
     })
-    
-    // CTF ADMIN DASHBOARD
-	// -------------------
-	// we will want this protected so you have to be logged in to visit
-	// we will use route middleware to verify this (the isLoggedIn function)
-	app.get('/ctfadmin', isAdmin, function(req, res) {
-        
-        
-        
-		res.render('ctfadmin.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
-	});
 
 	// LOGOUT
 	// ------
@@ -166,7 +175,7 @@ function isAdmin(req, res, next){
         next();
     } else {
         console.log('You are not an admin');
-        res.redirect('/login');
+        res.redirect('/dashboard');
     }
 }
 
