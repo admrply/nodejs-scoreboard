@@ -15,7 +15,7 @@ gamePanel.factory('socket', function($rootScope) {
 });
 
 gamePanel.factory('TeamRefresh', function($resource) {
-    return $resource("/api/queue", {}, {
+    return $resource("/ranking", {}, {
         query: {
             isArray: true
         }
@@ -25,12 +25,18 @@ gamePanel.factory('TeamRefresh', function($resource) {
 gamePanel.controller('mainController', function($scope, $http, socket, TeamRefresh) {
     $scope.formData = {};
     
-    $scope.labels = ['Team 1', 'Another Team', 'Team B', 'The A TEAM'];
-    $scope.series = ['Series A', 'Series B'];
-
-    $scope.data = [
-        [3, 5, 2, 4]
-    ];
+    $http.get('/ranking')
+        .success(function(data) {
+            $scope.teams = data;
+            console.log($scope.teams);
+            $scope.labels = $scope.teams.local.name;
+            $scope.data = $scope.teams.local.flags.length;
+        })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
+    
+    
     
     //For each Team, get team name and size of flag array and save to scope.
     

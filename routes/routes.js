@@ -128,10 +128,15 @@ module.exports = function(app, passport, io) {
     // GET TEAM LIST
     // -------------
     app.get('/ranking', function(req, res) {
-        Flag.count(function(err, c) {
-            var noOfFlags = c;
-            
+        Team.find({}, function(err, docs) {
+            if (!err){ 
+                res.json(docs);
+            } else {throw err;}
         });
+//        Flag.count(function(err, c) {
+//            var noOfFlags = c;
+//            
+//        });
     })
     
     // CTF ADMIN DASHBOARD
