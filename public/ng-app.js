@@ -14,15 +14,7 @@ gamePanel.factory('socket', function($rootScope) {
 	};
 });
 
-gamePanel.factory('GameRefresh', function($resource) {
-  return $resource("/api/games", {}, {
-      query: {
-          isArray: true
-      }
-  });
-});
-
-gamePanel.factory('QueueRefresh', function($resource) {
+gamePanel.factory('TeamRefresh', function($resource) {
     return $resource("/api/queue", {}, {
         query: {
             isArray: true
@@ -30,7 +22,7 @@ gamePanel.factory('QueueRefresh', function($resource) {
     });
 });
 
-gamePanel.controller('mainController', function($scope, $http, socket, GameRefresh, QueueRefresh) {
+gamePanel.controller('mainController', function($scope, $http, socket, TeamRefresh) {
     $scope.formData = {};
     
     $scope.labels = ['Team 1', 'Another Team', 'Team B', 'The A TEAM'];

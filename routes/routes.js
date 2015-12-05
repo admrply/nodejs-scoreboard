@@ -125,14 +125,14 @@ module.exports = function(app, passport, io) {
         
     });
     
-//    // ORDER TEAMS
-//    // -----------
-//    app.get('/ranking', function(req, res) {
-//        Flag.count(function(err, c) {
-//            var noOfFlags = c;
-//            
-//        });
-//    })
+    // GET TEAM LIST
+    // -------------
+    app.get('/ranking', function(req, res) {
+        Flag.count(function(err, c) {
+            var noOfFlags = c;
+            
+        });
+    })
     
     // CTF ADMIN DASHBOARD
 	// -------------------

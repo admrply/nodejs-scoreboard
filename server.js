@@ -16,7 +16,7 @@ var express  = require('express'),
 
 // configuration =================
 
-mongoose.connect('mongodb://localhost:27017');     // connect to mongoDB database on bound localhost
+mongoose.connect('mongodb://heroku_prmdxm2z:ae4i7029vf3dvlufs4i5413l12@ds061374.mongolab.com:61374/heroku_prmdxm2z');     // connect to mongoDB database on bound localhost
 
 app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
 app.use(morgan('dev'));                                         // log every request to the console
