@@ -9,6 +9,7 @@ var express  = require('express'),
     bodyParser     = require('body-parser'),
     methodOverride = require('method-override'),
     flash          = require('connect-flash'),
+    port           = process.env.port || 80,
         
     session       = require('express-session'),
     sessionConfig = require('./config/session.js'),
@@ -45,4 +46,4 @@ io.on('connection', function (socket) {
 });
 
 // listen (start app with node server.js) ======================================
-server.listen(80);
+server.listen(port);
