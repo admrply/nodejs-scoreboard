@@ -39,7 +39,9 @@ module.exports = function(app, passport, io) {
 		successRedirect : '/dashboard', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
-	}));
+	}), function() {
+        io.emit('listChange');
+    });
 
 	// DASHBOARD
 	// ---------
